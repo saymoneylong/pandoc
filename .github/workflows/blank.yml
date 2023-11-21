@@ -1,4 +1,4 @@
- # This is a basic workflow to help you get started with Actions
+# This is a basic workflow to help you get started with Actions
 
 name: pandoc
 
@@ -7,9 +7,9 @@ on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -31,16 +31,17 @@ jobs:
       - name: Run a multi-line script
         run: |
           echo Add other actions to build,
-          echo test, and deploy your project. 
+          echo test, and deploy your project.
       - name: Install soft
         run: |
           sudo apt update
           sudo apt install pandoc
-          pandoc lab1.md -0 lab1.docx
-          pandoc lab1.md -0 lab1.pdf -- pdf-engine-xelatex -V mainfront="Viberation Serif"
-          zip --junk-paths lab1 lab1.docx lab1.pdf lab1.md
+          sudo apt install texlive-latex-base texlive-fonts-recommended texlive-extra-utils texlive-latex-extra texlive-xetex texlive-lang-cyrillic -y
+          pandoc lab1.md -o lab1.docx
+          pandoc lab1.md -o lab1.pdf --pdf-engine=xelatex -V mainfont="Liberation Serif" 
+          zip --junk-paths lab1 lab1.docx lab1.md lab1.pdf
           
-      - name: CreateRelease
+      - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -49,15 +50,15 @@ jobs:
           tag_name: ${{ github.run_number }}
           release_name: Release ${{ github.run_number }}
           draft: false
-          prerelease: false
+          prerelease: false                
 
       - name: Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
         env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-         upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: ./lab1.zip
-         asset_mame: lab1.zip
-         assent_content_type: application/zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./lab1.zip
+          asset_name: lab1.zip
+          asset_content_type: application/zip
