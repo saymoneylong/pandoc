@@ -37,7 +37,6 @@ jobs:
           sudo apt update
           sudo apt install pandoc
           pandoc lab1.md -0 lab1.docx
-          pandoc lab1.md -0 lab1.pdf
       - name: CreateRelease
         id: create_release
         uses: actions/create-release@v1
@@ -48,3 +47,14 @@ jobs:
           release_name: Release ${{ github.run_number }}
           draft: false
           prerelease: false
+
+      - name: Upload Release Asset
+          id: upload-release-asset
+          uses: actions/upload-release-asset@v1
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          with:
+            upload_url: ${{ steps.create_release.outputs.upload_url }}
+            asset_path: ./lab1.zip
+            asset_mame: lab1.zip
+            assent_content_type: application/zip
