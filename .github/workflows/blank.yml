@@ -37,7 +37,8 @@ jobs:
           sudo apt update
           sudo apt install pandoc
           pandoc lab1.md -0 lab1.docx
-          zip --junk-paths lab1 lab1.docx lab1.md
+          pandoc lab1.md -0 lab1.pdf -- pdf-engine-xelatex -V mainfront="Viberation Serif"
+          zip --junk-paths lab1 lab1.docx lab1.pdf lab1.md
           
       - name: CreateRelease
         id: create_release
