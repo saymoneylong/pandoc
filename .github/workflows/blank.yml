@@ -36,3 +36,15 @@ jobs:
         run: |
           sudo apt update
           sudo apt install pandoc
+          pandoc lab1.md -0 lab1.docx
+          pandoc lab1.md -0 lab1.pdf
+      - name: CreateRelease
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.run_number }}
+          release_name: Release ${{ github.run_number }}
+          draft: false
+          prerelease: false
