@@ -37,9 +37,9 @@ jobs:
           sudo apt update
           sudo apt install pandoc
           sudo apt install texlive-latex-base texlive-fonts-recommended texlive-extra-utils texlive-latex-extra texlive-xetex texlive-lang-cyrillic -y
-          pandoc lab1.md -o lab1.docx
-          pandoc lab1.md -o lab1.pdf --pdf-engine=xelatex -V mainfont="Liberation Serif" 
-          zip --junk-paths lab1 lab1.docx lab1.md lab1.pdf
+          pandoc Lr1.md -o lab1.docx
+          pandoc Lr1.md -o lab1.pdf --pdf-engine=xelatex -V mainfont="Liberation Serif" 
+          zip --junk-paths Lr1 lab1.docx lab1.md lab1.pdf
           
       - name: Create Release
         id: create_release
